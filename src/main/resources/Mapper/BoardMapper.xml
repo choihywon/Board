@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springbasic.mapper.BoardMapper">
+
+    <select id="findAllBoards" resultType="com.example.springbasic.entity.Board">
+        SELECT id, title, content, writer, created_at AS createdAt
+        FROM board
+        ORDER BY created_at DESC
+    </select>
+
+    <select id="findBoardById" parameterType="int" resultType="com.example.springbasic.entity.Board">
+        SELECT id, title, content, writer, created_at AS createdAt
+        FROM board
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insertBoard" parameterType="com.example.springbasic.entity.Board" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO board (title, content, writer, created_at)
+        VALUES (#{title}, #{content}, #{writer}, NOW())
+    </insert>
+
+    <update id="updateBoard" parameterType="com.example.springbasic.entity.Board">
+        UPDATE board
+        <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteBoard" parameterType="int">
+        DELETE FROM board
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
